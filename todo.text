@@ -3,7 +3,9 @@
 [+] npx tsc --init
 [+] npm i -D @types/node
 [+] npm i -D --save-exact prettier
-[+] npm install --save-dev @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint typescript
+[-] npm install --save-dev @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint typescript
 [+] npm i -D eslint-config-prettier
+[+] npm install --save-dev husky
+[+] npx husky init
 
 
