@@ -8,5 +8,6 @@
 [+] npm install --save-dev husky
 [+] npx husky init
 [+] npm install --save-dev lint-staged
+[+] npm install dotenv
 
 
