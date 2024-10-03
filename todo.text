@@ -7,5 +7,6 @@
 [+] npm i -D eslint-config-prettier
 [+] npm install --save-dev husky
 [+] npx husky init
+[+] npm install --save-dev lint-staged
 
 
