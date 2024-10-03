@@ -7,5 +7,5 @@
 //         project: true,
 //         tsconfigRootDir: __dirname
 //     },
-//     root: true,  
+//     root: true,
 //   };

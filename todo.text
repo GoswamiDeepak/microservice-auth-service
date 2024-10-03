@@ -9,5 +9,7 @@
 [+] npx husky init
 [+] npm install --save-dev lint-staged
 [+] npm install dotenv
+[+] npm i -D @types/express
+[+] npm i -D ts-node
 
 

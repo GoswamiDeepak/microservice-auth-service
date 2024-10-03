@@ -1,44 +1,48 @@
 {
-  "name": "auth-service",
-  "version": "1.0.0",
-  "description": "user managment app",
-  "main": "index.js",
-  "scripts": {
-    "format:check": "prettier . --check",
-    "format:fix": "prettier . --write",
-    "lint": "npx eslint .",
-    "lint:fix": "npx eslint . --fix",
-    "prepare": "husky"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/GoswamiDeepak/microservice-auth-service.git"
-  },
-  "author": "deepak goswami <deepakgowamiofficial@gmail.com>",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/GoswamiDeepak/microservice-auth-service/issues"
-  },
-  "homepage": "https://github.com/GoswamiDeepak/microservice-auth-service#readme",
-  "devDependencies": {
-    "@eslint/js": "^9.11.1",
-    "@types/eslint__js": "^8.42.3",
-    "@types/node": "^22.7.4",
-    "eslint": "^9.11.1",
-    "eslint-config-prettier": "^9.1.0",
-    "husky": "^9.1.6",
-    "lint-staged": "^15.2.10",
-    "prettier": "3.3.3",
-    "typescript": "^5.4.5",
-    "typescript-eslint": "^8.8.0"
-  },
-  "lint-staged": {
-    "*.ts": [
-      "npm run lint:fix",
-      "npm run format:fix"
-    ]
-  },
-  "dependencies": {
-    "dotenv": "^16.4.5"
-  }
+    "name": "auth-service",
+    "version": "1.0.0",
+    "description": "user managment app",
+    "main": "index.js",
+    "scripts": {
+        "dev" : "nodemon src/index.ts",
+        "format:check": "prettier . --check",
+        "format:fix": "prettier . --write",
+        "lint": "npx eslint .",
+        "lint:fix": "npx eslint . --fix",
+        "prepare": "husky"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/GoswamiDeepak/microservice-auth-service.git"
+    },
+    "author": "deepak goswami <deepakgowamiofficial@gmail.com>",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/GoswamiDeepak/microservice-auth-service/issues"
+    },
+    "homepage": "https://github.com/GoswamiDeepak/microservice-auth-service#readme",
+    "devDependencies": {
+        "@eslint/js": "^9.11.1",
+        "@types/eslint__js": "^8.42.3",
+        "@types/express": "^5.0.0",
+        "@types/node": "^22.7.4",
+        "eslint": "^9.11.1",
+        "eslint-config-prettier": "^9.1.0",
+        "husky": "^9.1.6",
+        "lint-staged": "^15.2.10",
+        "prettier": "3.3.3",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.4.5",
+        "typescript-eslint": "^8.8.0"
+    },
+    "lint-staged": {
+        "*.ts": [
+            "npm run lint:fix",
+            "npm run format:fix"
+        ]
+    },
+    "dependencies": {
+        "dotenv": "^16.4.5",
+        "express": "^4.21.0"
+    }
 }
