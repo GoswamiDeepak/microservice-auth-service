@@ -4,7 +4,7 @@
     "description": "user managment app",
     "main": "index.js",
     "scripts": {
-        "dev" : "nodemon src/index.ts",
+        "dev": "nodemon src/index.ts",
         "format:check": "prettier . --check",
         "format:fix": "prettier . --write",
         "lint": "npx eslint .",
