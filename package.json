@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/GoswamiDeepak/microservice-auth-service/issues"
   },
-  "homepage": "https://github.com/GoswamiDeepak/microservice-auth-service#readme"
+  "homepage": "https://github.com/GoswamiDeepak/microservice-auth-service#readme",
+  "devDependencies": {
+    "@types/node": "^22.7.4",
+    "typescript": "^5.6.2"
+  }
 }
