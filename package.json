@@ -1,37 +1,45 @@
 {
-  "name": "authservice",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "format:check": "prettier . --check",
-    "format:fix": "prettier . --write",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "prepare": "husky"
-  },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@eslint/js": "^9.12.0",
-    "@types/eslint__js": "^8.42.3",
-    "@types/node": "^22.7.5",
-    "eslint": "^9.12.0",
-    "eslint-config-prettier": "^9.1.0",
-    "husky": "^9.1.6",
-    "lint-staged": "^15.2.10",
-    "prettier": "3.3.3",
-    "typescript": "^5.6.3",
-    "typescript-eslint": "^8.8.1"
-  },
-  "lint-staged": {
-    "*.ts": [
-      "npm run lint:fix",
-      "npm run format:fix"
-    ]
-  },
-  "dependencies": {
-    "dotenv": "^16.4.5"
-  }
+    "name": "authservice",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "type": "commonjs",
+    "scripts": {
+        "dev": "nodemon src/server.ts",
+        "format:check": "prettier . --check",
+        "format:fix": "prettier . --write",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "prepare": "husky"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@eslint/js": "^9.12.0",
+        "@types/eslint__js": "^8.42.3",
+        "@types/express": "^5.0.0",
+        "@types/node": "^20.11.0",
+        "@types/winston": "^2.4.4",
+        "eslint": "^9.12.0",
+        "eslint-config-prettier": "^9.1.0",
+        "husky": "^9.1.6",
+        "lint-staged": "^15.2.10",
+        "nodemon": "^3.1.7",
+        "prettier": "3.3.3",
+        "ts-node": "^10.9.2",
+        "tslib": "^2.8.0",
+        "typescript": "^5.6.3",
+        "typescript-eslint": "^8.8.1"
+    },
+    "lint-staged": {
+        "*.ts": [
+            "npm run lint:fix",
+            "npm run format:fix"
+        ]
+    },
+    "dependencies": {
+        "dotenv": "^16.4.5",
+        "express": "^4.21.1",
+        "winston": "^3.15.0"
+    }
 }
