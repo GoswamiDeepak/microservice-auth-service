@@ -1,6 +1,7 @@
 import { discount } from './src/utills';
 import request from 'supertest';
 import app from './src/app';
+
 describe('App', () => {
     it('should calculate the discount', () => {
         const result = discount(100, 10);
