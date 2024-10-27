@@ -8,6 +8,10 @@ app.get('/', async (req, res) => {
     res.status(200).send('Welcome to auth-service!');
 });
 
+import authRoute from './routes/auth';
+
+app.use('/auth', authRoute);
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
     logger.error(err.message);
