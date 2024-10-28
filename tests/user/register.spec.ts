@@ -4,7 +4,7 @@ import { App } from 'supertest/types';
 import { User } from '../../src/entity/User';
 import { DataSource } from 'typeorm';
 import { AppDataSource } from '../../src/config/data-source';
-import { truncateTable } from '../utils';
+import { Role } from '../../src/constants';
 
 describe('POST /auth/register', () => {
     let connection: DataSource;
@@ -15,8 +15,10 @@ describe('POST /auth/register', () => {
     });
 
     beforeEach(async () => {
+        await connection.dropDatabase();
+        await connection.synchronize();
         //database truncate
-        await truncateTable(connection);
+        // await truncateTable(connection);
     });
 
     afterAll(async () => {
@@ -81,6 +83,9 @@ describe('POST /auth/register', () => {
             const userRespository = connection.getRepository(User);
             const user = await userRespository.find();
             expect(user).toHaveLength(1);
+            expect(user[0].firstname).toBe(userData.firstname);
+            expect(user[0].lastname).toBe(userData.lastname);
+            expect(user[0].email).toBe(userData.email);
         });
         it('should return the id of the newly created user in the response', async () => {
             // Arrange
@@ -99,6 +104,25 @@ describe('POST /auth/register', () => {
             // Assert
             expect(response.statusCode).toBe(201);
             expect(response.body).toHaveProperty('id');
+        });
+        it('should assign a customer role', async () => {
+            // Arrange
+            const userData = {
+                firstname: 'deepak',
+                lastname: 'goswami',
+                email: 'deepakgoswami@gmail.com',
+                password: 'secret',
+            };
+
+            // Act
+            await request(app as unknown as App)
+                .post('/auth/register')
+                .send(userData);
+            //Assert
+            const userRepository = connection.getRepository(User);
+            const user = await userRepository.find();
+            expect(user[0]).toHaveProperty('role');
+            expect(user[0].role).toBe(Role.CUSTOMER);
         });
     });
     //sad path
