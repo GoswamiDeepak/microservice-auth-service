@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import { Userservice } from '../services/userService';
 import { Logger } from 'winston';
+// import createHttpError from 'http-errors';
+import { validationResult } from 'express-validator';
 
 interface UserData {
     firstname: string;
@@ -22,6 +24,12 @@ export class AuthController {
         res: Response,
         next: NextFunction,
     ) {
+        //validation error
+        const result = validationResult(req);
+        if (!result.isEmpty()) {
+            return res.status(400).json({ errors: result.array() });
+        }
+
         const { firstname, lastname, email, password } = req.body;
         this.logger.debug('New request to register user', {
             firstname,
@@ -39,7 +47,8 @@ export class AuthController {
             this.logger.info('user has been created', { id: user.id });
             res.status(201).json({ id: user.id });
         } catch (error) {
-            return next(error);
+            next(error);
+            return;
         }
     }
 }
