@@ -1,6 +1,6 @@
-import { Request, Response } from 'express';
-import { AppDataSource } from '../config/data-source';
-import { User } from '../entity/User';
+import { NextFunction, Request, Response } from 'express';
+import { Userservice } from '../services/userService';
+import { Logger } from 'winston';
 
 interface UserData {
     firstname: string;
@@ -12,15 +12,34 @@ interface RegisterUserRequest extends Request {
     body: UserData;
 }
 export class AuthController {
-    async register(req: RegisterUserRequest, res: Response) {
+    constructor(
+        private userService: Userservice,
+        private logger: Logger,
+    ) {}
+
+    async register(
+        req: RegisterUserRequest,
+        res: Response,
+        next: NextFunction,
+    ) {
         const { firstname, lastname, email, password } = req.body;
-        const userRepository = AppDataSource.getRepository(User);
-        const user = await userRepository.save({
+        this.logger.debug('New request to register user', {
             firstname,
             lastname,
             email,
-            password,
+            password: '******',
         });
-        res.status(201).json({ id: user.id });
+        try {
+            const user = await this.userService.create({
+                firstname,
+                lastname,
+                email,
+                password,
+            });
+            this.logger.info('user has been created', { id: user.id });
+            res.status(201).json({ id: user.id });
+        } catch (error) {
+            return next(error);
+        }
     }
 }
