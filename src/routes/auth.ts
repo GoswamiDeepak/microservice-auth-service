@@ -12,7 +12,6 @@ const router = express.Router();
 const userRepository = AppDataSource.getRepository(User);
 const userService = new Userservice(userRepository);
 const refreshTokenRepository = AppDataSource.getRepository(RefreshToken);
-
 const tokenService = new TokenService(refreshTokenRepository);
 const authController = new AuthController(userService, logger, tokenService);
 
