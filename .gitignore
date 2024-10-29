@@ -1,5 +1,6 @@
 todo.text
 userService.ts
+certs/
 # Logs
 logs
 *.log
