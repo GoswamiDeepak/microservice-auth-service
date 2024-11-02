@@ -5,7 +5,7 @@ import { validationResult } from 'express-validator';
 import { JwtPayload } from 'jsonwebtoken';
 import { Config } from '../config';
 import { TokenService } from '../services/TokenService';
-import { RegisterUserRequest } from '../types';
+import { AuthRequest, RegisterUserRequest } from '../types';
 import createHttpError from 'http-errors';
 import { CredentialService } from '../services/CreadentialService';
 
@@ -157,5 +157,10 @@ export class AuthController {
         } catch (error) {
             next(error);
         }
+    }
+
+    async self(req: AuthRequest, res: Response) {
+        const user = await this.userService.findbyId(Number(req.auth.sub));
+        res.status(200).json(user);
     }
 }

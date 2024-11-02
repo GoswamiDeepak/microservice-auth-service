@@ -2,11 +2,12 @@ import 'reflect-metadata';
 import express, { Request, Response, NextFunction } from 'express';
 import { HttpError } from 'http-errors';
 import logger from './config/logger';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 
 app.use(express.json());
-
+app.use(cookieParser());
 app.get('/', async (req, res) => {
     res.status(200).send('Welcome to auth-service!');
 });

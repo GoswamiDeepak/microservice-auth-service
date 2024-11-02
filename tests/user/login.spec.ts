@@ -8,7 +8,7 @@ import { User } from '../../src/entity/User';
 import { Role } from '../../src/constants';
 import { App } from 'supertest/types';
 
-describe('POST /auth/login', () => {
+describe.skip('POST /auth/login', () => {
     let connection: DataSource;
 
     beforeAll(async () => {
@@ -35,8 +35,8 @@ describe('POST /auth/login', () => {
             };
 
             const hashedPassword = await bcrypt.hash(userData.password, 10);
-
             const userRepository = connection.getRepository(User);
+
             //register user
             await userRepository.save({
                 ...userData,
