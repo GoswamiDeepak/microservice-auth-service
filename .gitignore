@@ -1,6 +1,7 @@
 todo.text
 userService.ts
 certs/
+public/
 # Logs
 logs
 *.log
