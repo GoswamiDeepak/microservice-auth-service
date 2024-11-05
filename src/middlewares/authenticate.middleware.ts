@@ -1,29 +1,33 @@
-import { expressjwt, GetVerificationKey } from 'express-jwt';
-import { Request } from 'express';
-import jwksClient from 'jwks-rsa';
-import { Config } from '../config';
-import { AuthCookie } from '../types';
-// import { AuthCookie } from "../types";
+import { expressjwt, GetVerificationKey } from 'express-jwt'; // Import express-jwt for JWT middleware
+import { Request } from 'express'; // Import Request type from express
+import jwksClient from 'jwks-rsa'; // Import jwks-rsa for fetching JSON Web Key Sets
+import { Config } from '../config'; // Import configuration settings
+import { AuthCookie } from '../types'; // Import AuthCookie type for type safety
 
+// Export the configured expressjwt middleware
 export default expressjwt({
+    // Configure the secret using jwksClient to fetch the signing key
     secret: jwksClient.expressJwtSecret({
-        jwksUri: Config.JWKS_URI!,
-        cache: true,
-        rateLimit: true,
-    }) as GetVerificationKey,
-    algorithms: ['RS256'],
-    getToken(req: Request) {
-        const authHeader = req.headers.authorization;
+        jwksUri: Config.JWKS_URI!, // URI to fetch the JWKS
+        cache: true, // Enable caching of the keys
+        rateLimit: true, // Enable rate limiting for key requests
+    }) as GetVerificationKey, // Cast to GetVerificationKey type
+    algorithms: ['RS256'], // Specify the algorithm used for signing the JWT
 
-        // Bearer eyjllsdjfljlasdjfljlsadjfljlsdf
+    // Function to extract the token from the request
+    getToken(req: Request) {
+        const authHeader = req.headers.authorization; // Get the Authorization header
+
+        // Check if the Authorization header exists and is not 'undefined'
         if (authHeader && authHeader.split(' ')[1] !== 'undefined') {
-            const token = authHeader.split(' ')[1];
+            const token = authHeader.split(' ')[1]; // Extract the token from 'Bearer <token>'
             if (token) {
-                return token;
+                return token; // Return the token if it exists
             }
         }
 
-        const { accessToken } = req.cookies as AuthCookie;
-        return accessToken;
+        // Fallback to retrieve the token from cookies if not found in the header
+        const { accessToken } = req.cookies as AuthCookie; // Get accessToken from cookies
+        return accessToken; // Return the accessToken from cookies
     },
 });
