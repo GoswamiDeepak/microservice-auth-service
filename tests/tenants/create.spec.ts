@@ -4,17 +4,31 @@ import { AppDataSource } from '../../src/config/data-source';
 import app from '../../src/app';
 import { App } from 'supertest/types';
 import { Tenant } from '../../src/entity/Tenant';
+import createJWKSMock from 'mock-jwks';
+import { Role } from '../../src/constants';
 
 describe('POST /tenants', () => {
     let connection: DataSource;
+    let jwks: ReturnType<typeof createJWKSMock>;
+    let admintoken: string;
 
     beforeAll(async () => {
         connection = await AppDataSource.initialize();
+        jwks = createJWKSMock('http://localhost:5501');
     });
 
     beforeEach(async () => {
         await connection.dropDatabase();
         await connection.synchronize();
+        jwks.start();
+        admintoken = jwks.token({
+            sub: '1',
+            role: Role.ADMIN,
+        });
+    });
+
+    afterEach(() => {
+        jwks.stop();
     });
 
     afterAll(async () => {
@@ -29,6 +43,7 @@ describe('POST /tenants', () => {
             };
             const response = await request(app as unknown as App)
                 .post('/tenants')
+                .set('Cookie', [`accessToken=${admintoken}`])
                 .send(tenantData);
 
             expect(response.statusCode).toBe(201);
@@ -41,6 +56,7 @@ describe('POST /tenants', () => {
             };
             await request(app as unknown as App)
                 .post('/tenants')
+                .set('Cookie', [`accessToken=${admintoken}`])
                 .send(tenantData);
             const tenantRespository = connection.getRepository(Tenant);
             const tenants = await tenantRespository.find();
@@ -49,6 +65,24 @@ describe('POST /tenants', () => {
             expect(tenants).toHaveLength(1);
             expect(tenants[0].name).toBe(tenantData.name);
             expect(tenants[0].address).toBe(tenantData.address);
+        });
+
+        it('should return 401 if user is not authenticate', async () => {
+            const tenantData = {
+                name: 'Tenant name',
+                address: 'Tenant address',
+            };
+            const response = await request(app as unknown as App)
+                .post('/tenants')
+                .send(tenantData);
+
+            //Assert
+
+            expect(response.statusCode).toBe(401);
+            const tenantRespository = connection.getRepository(Tenant);
+            const tenants = await tenantRespository.find();
+
+            expect(tenants).toHaveLength(0);
         });
     });
 });
