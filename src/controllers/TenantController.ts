@@ -2,6 +2,7 @@ import { NextFunction, Response } from 'express';
 import { TenantService } from '../services/TenantServices';
 import { CreateTenantRequest } from '../types';
 import { Logger } from 'winston';
+import { validationResult } from 'express-validator';
 
 export class TenantController {
     constructor(
@@ -9,7 +10,13 @@ export class TenantController {
         private logger: Logger,
     ) {}
     async create(req: CreateTenantRequest, res: Response, next: NextFunction) {
+        const result = validationResult(req);
+        if (!result.isEmpty()) {
+            res.status(400).json({ errors: result.array() });
+            return;
+        }
         const { name, address } = req.body;
+
         this.logger.debug('request for creating tenant', { name, address });
         try {
             const tenant = await this.tenantService.create({ name, address });

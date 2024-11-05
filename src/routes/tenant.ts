@@ -1,4 +1,4 @@
-import express, { RequestHandler } from 'express';
+import express, { NextFunction, RequestHandler, Response } from 'express';
 import { TenantController } from '../controllers/TenantController';
 import { TenantService } from '../services/TenantServices';
 import { AppDataSource } from '../config/data-source';
@@ -7,6 +7,8 @@ import logger from '../config/logger';
 import authenticateMiddleware from '../middlewares/authenticate.middleware';
 import { canAccess } from '../middlewares/canAccess';
 import { Role } from '../constants';
+import tenantValidator from '../validators/tenant.validator';
+import { CreateTenantRequest } from '../types';
 
 const router = express.Router();
 
@@ -18,7 +20,8 @@ router.post(
     '/',
     authenticateMiddleware as RequestHandler,
     canAccess([Role.ADMIN]),
-    (req, res, next) => {
+    tenantValidator,
+    (req: CreateTenantRequest, res: Response, next: NextFunction) => {
         tenantController.create(req, res, next);
     },
 );
