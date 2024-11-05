@@ -1,8 +1,6 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
-import { User } from '../entity/User';
 import { Config } from '.';
-import { RefreshToken } from '../entity/RefreshToken';
 
 export const AppDataSource = new DataSource({
     type: 'postgres',
@@ -13,7 +11,8 @@ export const AppDataSource = new DataSource({
     database: Config.DB_NAME,
     synchronize: false, //always use false in production
     logging: false,
-    entities: [User, RefreshToken],
-    migrations: ['src/migration/*.ts'],
+    // entities: [User, RefreshToken, Tenant],
+    entities: ['src/entity/*.ts'],
+    migrations: ['src/migration/*.ts'], //wildcart
     subscribers: [],
 });
