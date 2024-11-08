@@ -4,12 +4,11 @@ import { Repository } from 'typeorm';
 import bcrypt from 'bcrypt';
 import { Userdata } from '../types';
 import createHttpError from 'http-errors';
-import { Role } from '../constants';
 // export const Userservice = AppDataSource.getRepository(User)
 export class Userservice {
     constructor(private userRespository: Repository<User>) {}
 
-    async create({ firstname, lastname, email, password }: Userdata) {
+    async create({ firstname, lastname, email, password, role }: Userdata) {
         const isUser = await this.userRespository.findOne({
             where: { email: email },
         });
@@ -26,7 +25,7 @@ export class Userservice {
                 lastname,
                 email,
                 password: hashedPassword,
-                role: Role.CUSTOMER,
+                role: role,
             });
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (err) {
