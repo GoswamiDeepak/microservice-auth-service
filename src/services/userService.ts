@@ -2,7 +2,7 @@
 import { User } from '../entity/User';
 import { Repository } from 'typeorm';
 import bcrypt from 'bcrypt';
-import { Userdata } from '../types';
+import { LimitedUserData, Userdata } from '../types';
 import createHttpError from 'http-errors';
 // export const Userservice = AppDataSource.getRepository(User)
 export class Userservice {
@@ -48,5 +48,33 @@ export class Userservice {
                 id: id,
             },
         });
+    }
+
+    async update(
+        userId: number,
+        { firstname, lastname, role }: LimitedUserData,
+    ) {
+        try {
+            return await this.userRespository.update(userId, {
+                firstname,
+                lastname,
+                role,
+            });
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (error) {
+            const err = createHttpError(
+                500,
+                'Failed to update the user in the database!',
+            );
+            throw err;
+        }
+    }
+
+    async getAll() {
+        return await this.userRespository.find();
+    }
+
+    async deleteById(userId: number) {
+        return await this.userRespository.delete(userId);
     }
 }
