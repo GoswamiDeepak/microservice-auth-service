@@ -8,15 +8,17 @@ import { Role } from '../../src/constants';
 import { isJwt } from '../utils';
 import { RefreshToken } from '../../src/entity/RefreshToken';
 
-describe.skip('POST /auth/register', () => {
+describe('POST /auth/register', () => {
     let connection: DataSource;
 
     beforeAll(async () => {
+        //hook runs once before all tests
         //connect database
         connection = await AppDataSource.initialize();
     });
 
     beforeEach(async () => {
+        // Hook that runs before each test
         await connection.dropDatabase();
         await connection.synchronize();
         //database truncate
@@ -24,6 +26,7 @@ describe.skip('POST /auth/register', () => {
     });
 
     afterAll(async () => {
+        //hook that runs once after the all tests
         //disconnect database
         await connection.destroy();
     });
@@ -84,6 +87,7 @@ describe.skip('POST /auth/register', () => {
             //Assert
             const userRespository = connection.getRepository(User);
             const user = await userRespository.find();
+
             expect(user).toHaveLength(1);
             expect(user[0].firstname).toBe(userData.firstname);
             expect(user[0].lastname).toBe(userData.lastname);
@@ -142,7 +146,7 @@ describe.skip('POST /auth/register', () => {
 
             //Assert
             const userRepository = connection.getRepository(User);
-            const user = await userRepository.find();
+            const user = await userRepository.find({ select: ['password'] });
             expect(user[0].password).not.toBe(userData.password);
             expect(user[0].password).toHaveLength(60);
             expect(user[0].password).toMatch(/^\$2b\$\d+\$/);
@@ -228,6 +232,7 @@ describe.skip('POST /auth/register', () => {
             expect(tokens).toHaveLength(1);
         });
     });
+
     //sad path
     describe('fields are missing', () => {
         it('should return 400 status code if email field is missing', async () => {
