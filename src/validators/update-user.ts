@@ -1,12 +1,13 @@
 import { checkSchema } from 'express-validator';
+const roles = ['customer', 'manager', 'admin'];
 
 export default checkSchema({
-    firstName: {
+    firstname: {
         errorMessage: 'First name is required!',
         notEmpty: true,
         trim: true,
     },
-    lastName: {
+    lastname: {
         errorMessage: 'Last name is required!',
         notEmpty: true,
         trim: true,
@@ -15,5 +16,9 @@ export default checkSchema({
         errorMessage: 'Role is required!',
         notEmpty: true,
         trim: true,
+        isIn: {
+            options: [roles],
+            errorMessage: `Role must be one of the following: ${roles.join(', ')}`,
+        },
     },
 });
