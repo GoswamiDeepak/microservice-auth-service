@@ -1,5 +1,7 @@
 import { checkSchema } from 'express-validator';
 
+const roles = ['customer', 'manager', 'admin'];
+
 export default checkSchema({
     email: {
         errorMessage: 'Email is required!',
@@ -10,22 +12,22 @@ export default checkSchema({
         },
     },
     firstname: {
-        errorMessage: 'firstname is required!',
+        errorMessage: 'Firstname is required!',
         notEmpty: true,
         trim: true,
     },
     lastname: {
-        errorMessage: 'lastname is required!',
+        errorMessage: 'Lastname is required!',
         notEmpty: true,
         trim: true,
     },
     password: {
-        errorMessage: 'password is required!',
+        errorMessage: 'Password is required!',
         notEmpty: true,
         trim: true,
         isLength: {
             options: {
-                min: 6,
+                min: 8,
             },
             errorMessage: 'Password must be at least 8 characters long',
         },
@@ -34,5 +36,9 @@ export default checkSchema({
         errorMessage: 'Role is required!',
         notEmpty: true,
         trim: true,
+        isIn: {
+            options: [roles],
+            errorMessage: `Role must be one of the following: ${roles.join(', ')}`,
+        },
     },
 });
