@@ -28,9 +28,7 @@ export class UserController {
                 role,
                 tenantId,
             });
-            // eslint-disable-next-line no-console
-            console.log(user);
-            res.status(201).json(user);
+            res.status(201).json({ id: user.id });
         } catch (error) {
             next(error);
             return;
