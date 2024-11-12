@@ -47,7 +47,12 @@ router.patch(
 router.get('/', (req, res, next) => tenantController.getAll(req, res, next));
 
 // Define the route for getting a single tenant by ID
-router.get('/:id', (req, res, next) => tenantController.getOne(req, res, next));
+router.get(
+    '/:id',
+    authenticateMiddleware as RequestHandler, // Middleware to authenticate the user
+    canAccess([Role.ADMIN]), // Middleware to check if the user has admin access
+    (req, res, next) => tenantController.getOne(req, res, next),
+);
 
 // Define the route for deleting a tenant by ID
 router.delete(

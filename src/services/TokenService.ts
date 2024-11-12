@@ -33,6 +33,7 @@ export class TokenService {
 
         return accessToken;
     }
+
     generateRefreshToken(payload: JwtPayload) {
         const refreshToken = sign(payload, Config.REFRESH_TOKEN_SECRET!, {
             algorithm: 'HS256',

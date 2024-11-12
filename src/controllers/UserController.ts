@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { Userservice } from '../services/userService';
 import { CreateUserReqest, UpdateUserReqest } from '../types';
-import { Role } from '../constants';
 import { validationResult } from 'express-validator';
 import createHttpError from 'http-errors';
 import { Logger } from 'winston';
@@ -18,16 +17,20 @@ export class UserController {
             res.status(400).json({ errors: result.array() });
             return;
         }
-        const { firstname, lastname, email, password } = req.body;
+        const { firstname, lastname, email, password, role, tenantId } =
+            req.body;
         try {
             const user = await this.userSerive.create({
                 firstname,
                 lastname,
                 email,
                 password,
-                role: Role.MANAGER,
+                role,
+                tenantId,
             });
-            res.status(201).json({ id: user.id });
+            // eslint-disable-next-line no-console
+            console.log(user);
+            res.status(201).json(user);
         } catch (error) {
             next(error);
             return;
@@ -37,7 +40,7 @@ export class UserController {
     async update(req: UpdateUserReqest, res: Response, next: NextFunction) {
         const result = validationResult(req);
         if (!result.isEmpty()) {
-            res.status(400).json({ errors: result.isEmpty() });
+            res.status(400).json({ errors: result.array() });
             return;
         }
         const { firstname, lastname, role } = req.body;
@@ -68,6 +71,7 @@ export class UserController {
             res.json(users);
         } catch (error) {
             next(error);
+            return;
         }
     }
 

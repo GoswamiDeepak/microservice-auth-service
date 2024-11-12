@@ -118,7 +118,7 @@ export class TenantController {
             // Call the service to delete the tenant by ID
             await this.tenantService.deleteById(Number(tenantId));
             this.logger.info('Tenant has been deleted', { id: tenantId }); // Log success
-            res.status(204).send(); // Return no content status
+            res.json({ id: Number(tenantId), message: 'user deleted!' }); // Return no content status
         } catch (error) {
             next(error); // Pass error to the next middleware
             return;

@@ -1,5 +1,10 @@
 // Import necessary modules and types from express and other files
-import express, { NextFunction, RequestHandler, Response } from 'express';
+import express, {
+    NextFunction,
+    Request,
+    RequestHandler,
+    Response,
+} from 'express';
 
 import authenticateMiddleware from '../middlewares/authenticate.middleware';
 import { canAccess } from '../middlewares/canAccess';
@@ -41,21 +46,23 @@ router.patch(
 
 router.get(
     '/',
-    authenticateMiddleware as RequestHandler,
-    canAccess([Role.ADMIN]), // Middleware to check if the user has admin access
-    userController.getAll,
+    authenticateMiddleware as RequestHandler, // Middleware to authenticate the user
+    (req: Request, res: Response, next: NextFunction) =>
+        userController.getAll(req, res, next),
 );
 router.get(
     '/:id',
     authenticateMiddleware as RequestHandler,
     canAccess([Role.ADMIN]), // Middleware to check if the user has admin access
-    userController.getOne,
+    (req: Request, res: Response, next: NextFunction) =>
+        userController.getOne(req, res, next),
 );
 router.delete(
     '/:id',
     authenticateMiddleware as RequestHandler,
     canAccess([Role.ADMIN]), // Middleware to check if the user has admin access
-    userController.destroy,
+    (req: Request, res: Response, next: NextFunction) =>
+        userController.destroy(req, res, next),
 );
 // Export the router to be used in other parts of the application
 export default router;

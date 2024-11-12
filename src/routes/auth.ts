@@ -1,3 +1,4 @@
+// Import necessary modules and types from express and other files
 import express, {
     Request,
     Response,
@@ -19,13 +20,17 @@ import authenticateMiddleware from '../middlewares/authenticate.middleware';
 import validateRefreshToken from '../middlewares/validateRefreshToken';
 import parseRefreshTokenMiddleware from '../middlewares/parseRefreshToken.middleware';
 
+// Create a new router instance
 const router = express.Router();
 
-const userRepository = AppDataSource.getRepository(User);
+// Initialize the repositories and services needed for authentication
+const userRepository = AppDataSource.getRepository(User); // Initialize the User repository using the AppDataSource
+const refreshTokenRepository = AppDataSource.getRepository(RefreshToken); // Initialize the resfreshToken repository using the AppDataSource
+//services....
 const userService = new Userservice(userRepository);
-const refreshTokenRepository = AppDataSource.getRepository(RefreshToken);
 const tokenService = new TokenService(refreshTokenRepository);
 const credentialService = new CredentialService();
+//dependecy injection for AuthController class
 const authController = new AuthController(
     userService,
     logger,
@@ -33,48 +38,59 @@ const authController = new AuthController(
     credentialService,
 );
 
+// Route for user registration
 router.post(
     '/register',
-    registerValidator,
+    registerValidator, // Validate the registration data
     async (req: Request, res: Response, next: NextFunction) => {
         try {
+            // Call the register method of AuthController
             authController.register(req, res, next);
         } catch (error) {
+            // Pass any errors to the next middleware
             next(error);
         }
     },
 );
+
+// Route for user login
 router.post(
     '/login',
-    loginValidator,
+    loginValidator, // Validate the login data
     async (req: Request, res: Response, next: NextFunction) => {
         try {
+            // Call the login method of AuthController
             authController.login(req, res, next);
         } catch (error) {
+            // Pass any errors to the next middleware
             next(error);
         }
     },
 );
 
+// Route to get the authenticated user's information
 router.get(
     '/self',
-    authenticateMiddleware as RequestHandler,
+    authenticateMiddleware as RequestHandler, // Middleware to authenticate the user
     (req: Request, res: Response) =>
-        authController.self(req as AuthRequest, res),
+        authController.self(req as AuthRequest, res), // Call the self method of AuthController
 );
 
+// Route to refresh the authentication token
 router.post(
     '/refresh',
-    validateRefreshToken as RequestHandler,
+    validateRefreshToken as RequestHandler, // Middleware to validate the refresh token
     (req: Request, res: Response, next: NextFunction) =>
-        authController.refresh(req as AuthRequest, res, next),
+        authController.refresh(req as AuthRequest, res, next), // Call the refresh method of AuthController
 );
 
+// Route to log out the user
 router.post(
     '/logout',
-    parseRefreshTokenMiddleware as RequestHandler,
+    parseRefreshTokenMiddleware as RequestHandler, // Middleware to parse the refresh token
     (req: Request, res: Response, next: NextFunction) =>
-        authController.logout(req as AuthRequest, res, next),
+        authController.logout(req as AuthRequest, res, next), // Call the logout method of AuthController
 );
-// router.post('/login',loginValidator,authController.login)
+
+// Export the router to be used in other parts of the application
 export default router;

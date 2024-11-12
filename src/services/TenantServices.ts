@@ -1,6 +1,7 @@
 import { Repository } from 'typeorm';
 import { ITenant } from '../types';
 import { Tenant } from '../entity/Tenant';
+import createHttpError from 'http-errors';
 
 export class TenantService {
     constructor(private tenantRespository: Repository<Tenant>) {}
@@ -23,6 +24,12 @@ export class TenantService {
     }
 
     async deleteById(tenantId: number) {
-        return await this.tenantRespository.delete(tenantId);
+        try {
+            return await this.tenantRespository.delete(tenantId);
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (error) {
+            const err = createHttpError(400, 'Invalid user Id');
+            throw err;
+        }
     }
 }
