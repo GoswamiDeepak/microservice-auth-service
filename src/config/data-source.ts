@@ -12,7 +12,7 @@ export const AppDataSource = new DataSource({
     synchronize: false, //always use false in production
     logging: false,
     // entities: [User, RefreshToken, Tenant],
-    entities: ['src/entity/*.ts'],
-    migrations: ['src/migration/*.ts'], //wildcart
+    entities: ['src/entity/*.{ts,js}'],
+    migrations: ['src/migration/*.{ts,js}'], //wildcart
     subscribers: [],
 });

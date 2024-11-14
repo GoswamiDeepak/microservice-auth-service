@@ -11,7 +11,10 @@ export default [
         rules: {
             'no-unused-vars': 'error',
             'no-console': 'error',
-        },
+        },      
+    },
+    {
+        ignores: ['dist', 'node_modules'],
     },
     pluginJs.configs.recommended,
     ...tseslint.configs.recommended,
