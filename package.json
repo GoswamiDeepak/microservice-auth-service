@@ -12,6 +12,7 @@
         "lint:fix": "eslint . --fix",
         "prepare": "husky",
         "test": "jest --runInBand",
+        "test:coverage": "jest --no-cache --coverage --all --runInBand",
         "test:watch": "jest --runInBand --watch",
         "start": "ts-node src/index.ts",
         "migration:generate": "cross-env NODE_ENV=dev typeorm-ts-node-commonjs migration:generate",
