@@ -4,7 +4,8 @@ import { Config } from '../config';
 import { User } from '../entity/User';
 import { RefreshToken } from '../entity/RefreshToken';
 import { Repository } from 'typeorm';
-
+// import path from 'path';
+// import fs from 'fs';
 export class TokenService {
     constructor(private refreshTokenRepository: Repository<RefreshToken>) {}
 
@@ -24,7 +25,8 @@ export class TokenService {
 
             throw error;
         }
-        */
+       */
+
         let privatekey: string;
         if (!Config.PRIVATE_KEY) {
             const error = createHttpError(500, 'SECRET_KEY is not set');
