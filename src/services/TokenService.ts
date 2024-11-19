@@ -45,8 +45,8 @@ export class TokenService {
 
         const accessToken = sign(payload, privatekey, {
             algorithm: 'RS256',
-            expiresIn: Config.ACCESS_TOKEN_EXPIRESIN,
-            issuer: Config.TOKEN_ISSUER,
+            expiresIn: '1h',
+            issuer: 'auth-service',
         });
 
         return accessToken;
@@ -55,8 +55,8 @@ export class TokenService {
     generateRefreshToken(payload: JwtPayload) {
         const refreshToken = sign(payload, Config.REFRESH_TOKEN_SECRET!, {
             algorithm: 'HS256',
-            expiresIn: Config.REFRESH_TOKEN_EXPIRESIN,
-            issuer: Config.TOKEN_ISSUER,
+            expiresIn: '1y',
+            issuer: 'auth-service',
             jwtid: String(payload.id), //can send id into payload
         });
         return refreshToken;
