@@ -50,6 +50,7 @@ describe('POST /auth/register', () => {
             //Assert
             expect(response.statusCode).toBe(201);
         });
+
         it('should return valid json format', async () => {
             //Arrange
             const userData = {
@@ -190,6 +191,7 @@ describe('POST /auth/register', () => {
             //Assert
             let accessToken = null;
             let refreshToken = null;
+
             const cookies =
                 (response.headers as unknown as Headers)['set-cookie'] || [];
             cookies.forEach((cookie) => {
@@ -206,6 +208,7 @@ describe('POST /auth/register', () => {
             expect(isJwt(accessToken)).toBeTruthy();
             expect(isJwt(refreshToken)).toBeTruthy();
         });
+
         it('should store the refresh token in the database', async () => {
             // Arrange
             const userData = {
