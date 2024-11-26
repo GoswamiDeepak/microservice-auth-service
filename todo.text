@@ -6,4 +6,4 @@ npm run migration:generate -- src/migration/migration -d src/config/data-source.
 
 npm run migration:run -- -d src/config/data-source.ts
 
-docker build -t mernstack_test_prod_image -f docker/production/Dockerfile .
+docker build -t mernstack_test_prod_image -f docker/production/Dockerfile . 
