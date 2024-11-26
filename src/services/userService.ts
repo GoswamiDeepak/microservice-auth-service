@@ -1,6 +1,6 @@
 import { User } from '../entity/User'; // Import the User entity
 import { Repository } from 'typeorm'; // Import Repository from TypeORM for database operations
-import bcrypt from 'bcrypt'; // Import bcrypt for password hashing
+import bcrypt from 'bcryptjs'; // Import bcrypt for password hashing
 import { LimitedUserData, Userdata } from '../types'; // Import types for user data
 import createHttpError from 'http-errors'; // Import http-errors for error handling
 

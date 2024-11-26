@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import request from 'supertest';
 import { AppDataSource } from '../../src/config/data-source';
 import app from '../../src/app';
@@ -59,8 +59,8 @@ describe('POST /auth/login', () => {
             }
 
             // Extract access and refresh tokens from cookies
-            let accessToken = null;
-            let refreshToken = null;
+            let accessToken: string | null = null;
+            let refreshToken: string | null = null;
             const cookies =
                 (response.headers as unknown as Headers)['set-cookie'] || [];
 
