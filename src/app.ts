@@ -3,8 +3,16 @@ import express, { Request, Response, NextFunction } from 'express';
 import { HttpError } from 'http-errors';
 import logger from './config/logger';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import { Config } from './config';
 
 const app = express();
+app.use(
+    cors({
+        origin: [Config.FRONTEND_URL!],
+        credentials: true,
+    }),
+);
 app.use(express.static('public'));
 app.use(express.json());
 app.use(cookieParser());

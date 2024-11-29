@@ -18,6 +18,7 @@ const {
     REFRESH_TOKEN_EXPIRESIN,
     JWKS_URI,
     PRIVATE_KEY,
+    FRONTEND_URL,
 } = process.env;
 
 export const Config = {
@@ -35,4 +36,5 @@ export const Config = {
     REFRESH_TOKEN_EXPIRESIN,
     JWKS_URI,
     PRIVATE_KEY,
+    FRONTEND_URL,
 };
