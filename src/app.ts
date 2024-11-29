@@ -4,6 +4,7 @@ import { HttpError } from 'http-errors';
 import logger from './config/logger';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import { Config } from './config';
 
 const app = express();
 app.use(
@@ -22,7 +23,6 @@ app.get('/', async (req, res) => {
 import authRoute from './routes/auth';
 import tenantRoute from './routes/tenant';
 import userRoute from './routes/user';
-import { Config } from './config';
 
 app.use('/auth', authRoute);
 app.use('/tenants', tenantRoute);
