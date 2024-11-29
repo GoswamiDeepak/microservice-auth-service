@@ -3,8 +3,15 @@ import express, { Request, Response, NextFunction } from 'express';
 import { HttpError } from 'http-errors';
 import logger from './config/logger';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 
 const app = express();
+app.use(
+    cors({
+        origin: [Config.FRONTEND_URL!],
+        credentials: true,
+    }),
+);
 app.use(express.static('public'));
 app.use(express.json());
 app.use(cookieParser());
@@ -15,6 +22,7 @@ app.get('/', async (req, res) => {
 import authRoute from './routes/auth';
 import tenantRoute from './routes/tenant';
 import userRoute from './routes/user';
+import { Config } from './config';
 
 app.use('/auth', authRoute);
 app.use('/tenants', tenantRoute);
