@@ -1,5 +1,5 @@
 import { User } from '../entity/User'; // Import the User entity
-import { Repository } from 'typeorm'; // Import Repository from TypeORM for database operations
+import { Brackets, Repository } from 'typeorm'; // Import Repository from TypeORM for database operations
 import bcrypt from 'bcryptjs'; // Import bcrypt for password hashing
 import { LimitedUserData, Userdata, UserQueryParams } from '../types'; // Import types for user data
 import createHttpError from 'http-errors'; // Import http-errors for error handling
@@ -107,11 +107,39 @@ export class Userservice {
 
     // Method to retrieve all users
     async getAll(validatedQuery: UserQueryParams) {
-        const queryBuilder = this.userRespository.createQueryBuilder();
+        const queryBuilder = this.userRespository.createQueryBuilder('user');
+
+        if (validatedQuery.q) {
+            const searchTerm = `%${validatedQuery.q}%`;
+            queryBuilder.where(
+                new Brackets((qb) => {
+                    qb.where(
+                        "CONCAT(user.firstname, ' ', user.lastname) ILike :q",
+                        { q: searchTerm },
+                    ).orWhere('user.email ILike :q', { q: searchTerm });
+
+                    /*
+                    qb.where('user.firstname ILike :q', { q: searchTerm })
+                        .orWhere('user.lastname ILike :q', { q: searchTerm })
+                        .orWhere('user.email ILike :q', { q: searchTerm });
+                      */
+                }),
+            );
+        }
+
+        if (validatedQuery.role) {
+            queryBuilder.andWhere('user.role = :role', {
+                role: validatedQuery.role,
+            });
+        }
+
         const result = await queryBuilder
             .skip((validatedQuery.currentPage - 1) * validatedQuery.perPage)
             .take(validatedQuery.perPage)
+            .orderBy('user.id', 'DESC')
             .getManyAndCount();
+
+        // console.log(queryBuilder.getSql()); //Check sql
 
         return result;
         // Return all users from the database
