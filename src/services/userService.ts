@@ -75,7 +75,10 @@ export class Userservice {
             where: {
                 id: id,
             },
-            select: ['id', 'firstname', 'lastname', 'email', 'role', 'tenant'],
+            relations: {
+                tenant: true,
+            },
+            // select: ['id', 'firstname', 'lastname', 'email', 'role', 'tenant'],
         });
     }
 
