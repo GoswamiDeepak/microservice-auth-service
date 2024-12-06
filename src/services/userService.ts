@@ -117,12 +117,6 @@ export class Userservice {
                         "CONCAT(user.firstname, ' ', user.lastname) ILike :q",
                         { q: searchTerm },
                     ).orWhere('user.email ILike :q', { q: searchTerm });
-
-                    /*
-                    qb.where('user.firstname ILike :q', { q: searchTerm })
-                        .orWhere('user.lastname ILike :q', { q: searchTerm })
-                        .orWhere('user.email ILike :q', { q: searchTerm });
-                      */
                 }),
             );
         }
@@ -139,12 +133,10 @@ export class Userservice {
             .orderBy('user.id', 'DESC')
             .getManyAndCount();
 
-        // console.log(queryBuilder.getSql()); //Check sql
+        // eslint-disable-next-line no-console
+        console.log(queryBuilder.getSql()); //Check sql
 
         return result;
-        // Return all users from the database
-        // const users = await this.userRespository.find();
-        // return users;
     }
 
     // Method to delete a user by their ID

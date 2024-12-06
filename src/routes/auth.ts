@@ -45,7 +45,7 @@ router.post(
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             // Call the register method of AuthController
-            authController.register(req, res, next);
+            await authController.register(req, res, next);
         } catch (error) {
             // Pass any errors to the next middleware
             next(error);
@@ -60,7 +60,7 @@ router.post(
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             // Call the login method of AuthController
-            authController.login(req, res, next);
+            await authController.login(req, res, next);
         } catch (error) {
             // Pass any errors to the next middleware
             next(error);
