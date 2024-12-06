@@ -23,14 +23,14 @@ export default checkSchema(
             trim: true,
             customSanitizer: {
                 options: (value) => {
-                    return value ? value : '';
+                    return value || '';
                 },
             },
         },
         role: {
             customSanitizer: {
                 options: (value) => {
-                    return value ? value : '';
+                    return value || '';
                 },
             },
         },
