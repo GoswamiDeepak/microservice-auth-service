@@ -17,6 +17,7 @@ import { AppDataSource } from '../config/data-source';
 import createUserValidator from '../validators/create-user.validator';
 import updateUserValidator from '../validators/update-user';
 import logger from '../config/logger';
+import listUsersValidator from '../validators/list-users-validator';
 
 // Create a new Express router instance
 const router = express.Router();
@@ -47,6 +48,8 @@ router.patch(
 router.get(
     '/',
     authenticateMiddleware as RequestHandler, // Middleware to authenticate the user
+    canAccess([Role.ADMIN]),
+    listUsersValidator,
     (req: Request, res: Response, next: NextFunction) =>
         userController.getAll(req, res, next),
 );

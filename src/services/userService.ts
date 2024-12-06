@@ -1,7 +1,7 @@
 import { User } from '../entity/User'; // Import the User entity
 import { Repository } from 'typeorm'; // Import Repository from TypeORM for database operations
 import bcrypt from 'bcryptjs'; // Import bcrypt for password hashing
-import { LimitedUserData, Userdata } from '../types'; // Import types for user data
+import { LimitedUserData, Userdata, UserQueryParams } from '../types'; // Import types for user data
 import createHttpError from 'http-errors'; // Import http-errors for error handling
 
 // Define the Userservice class to manage user-related operations
@@ -106,7 +106,13 @@ export class Userservice {
     }
 
     // Method to retrieve all users
-    async getAll() {
+    async getAll(validatedQuery: UserQueryParams) {
+        const queryBuilder = this.userRespository.createQueryBuilder();
+        const result = await queryBuilder
+            .skip((validatedQuery.currentPage - 1) * validatedQuery.perPage)
+            .take(validatedQuery.perPage)
+            .getManyAndCount();
+        return result;
         // Return all users from the database
         const users = await this.userRespository.find();
         return users;
