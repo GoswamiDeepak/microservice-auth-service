@@ -112,10 +112,11 @@ export class Userservice {
             .skip((validatedQuery.currentPage - 1) * validatedQuery.perPage)
             .take(validatedQuery.perPage)
             .getManyAndCount();
+
         return result;
         // Return all users from the database
-        const users = await this.userRespository.find();
-        return users;
+        // const users = await this.userRespository.find();
+        // return users;
     }
 
     // Method to delete a user by their ID
