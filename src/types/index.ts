@@ -52,6 +52,8 @@ export interface LimitedUserData {
     firstname: string;
     lastname: string;
     role: string;
+    email: string;
+    tanantId: number;
 }
 
 export interface UpdateUserReqest extends Request {

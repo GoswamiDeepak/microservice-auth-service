@@ -15,10 +15,21 @@ export default checkSchema({
     role: {
         errorMessage: 'Role is required!',
         notEmpty: true,
-        trim: true,
         isIn: {
             options: [roles],
             errorMessage: `Role must be one of the following: ${roles.join(', ')}`,
         },
+    },
+    email: {
+        isEmail: {
+            errorMessage: 'Invalid Email!',
+        },
+        notEmpty: true,
+        errorMessage: 'Email is required!',
+        trim: true,
+    },
+    tenantId: {
+        notEmpty: true,
+        errorMessage: 'Tenant ID is required!',
     },
 });
