@@ -85,7 +85,7 @@ export class Userservice {
     // Method to update user information
     async update(
         userId: number,
-        { firstname, lastname, role, email, tanantId }: LimitedUserData,
+        { firstname, lastname, role, email, tenantId }: LimitedUserData,
     ) {
         try {
             // Update the user's firstname, lastname, and role
@@ -94,7 +94,7 @@ export class Userservice {
                 lastname,
                 role,
                 email,
-                tenant: tanantId ? { id: tanantId } : undefined,
+                tenant: tenantId ? { id: tenantId } : null,
             });
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {

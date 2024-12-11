@@ -1,4 +1,5 @@
 import { checkSchema } from 'express-validator';
+import { UpdateUserReqest } from '../types';
 const roles = ['customer', 'manager', 'admin'];
 
 export default checkSchema({
@@ -29,7 +30,19 @@ export default checkSchema({
         trim: true,
     },
     tenantId: {
-        notEmpty: true,
         errorMessage: 'Tenant ID is required!',
+        trim: true,
+        custom: {
+            options: async (value: string, { req }) => {
+                // const role = req.body.role;
+                const role = (req as UpdateUserReqest).body.role;
+
+                if (role === 'admin') {
+                    return true;
+                } else {
+                    return !!value;
+                }
+            },
+        },
     },
 });

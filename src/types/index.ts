@@ -53,7 +53,7 @@ export interface LimitedUserData {
     lastname: string;
     role: string;
     email: string;
-    tanantId: number;
+    tenantId: number;
 }
 
 export interface UpdateUserReqest extends Request {

@@ -41,7 +41,7 @@ export class UserController {
             next(createHttpError(400, result.array()[0].msg as string));
             return;
         }
-        const { firstname, lastname, role, email, tanantId } = req.body;
+        const { firstname, lastname, role, email, tenantId } = req.body;
         const userId = req.params.id;
         if (isNaN(Number(userId))) {
             next(createHttpError(400, 'Invalid url param!'));
@@ -54,7 +54,7 @@ export class UserController {
                 lastname,
                 role,
                 email,
-                tanantId,
+                tenantId,
             });
             this.logger.info('User has been updated', { id: userId });
             res.json({ id: Number(userId) });
