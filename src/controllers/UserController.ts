@@ -14,7 +14,7 @@ export class UserController {
     async create(req: CreateUserReqest, res: Response, next: NextFunction) {
         const result = validationResult(req);
         if (!result.isEmpty()) {
-            res.status(400).json({ errors: result.array() });
+            next(createHttpError(400, result.array()[0].msg as string));
             return;
         }
         const { firstname, lastname, email, password, role, tenantId } =
@@ -38,7 +38,7 @@ export class UserController {
     async update(req: UpdateUserReqest, res: Response, next: NextFunction) {
         const result = validationResult(req);
         if (!result.isEmpty()) {
-            res.status(400).json({ errors: result.array() });
+            next(createHttpError(400, result.array()[0].msg as string));
             return;
         }
         const { firstname, lastname, role, email, tanantId } = req.body;

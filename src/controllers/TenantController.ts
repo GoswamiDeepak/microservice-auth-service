@@ -17,7 +17,7 @@ export class TenantController {
         // Validate request body
         const result = validationResult(req);
         if (!result.isEmpty()) {
-            res.status(400).json({ errors: result.array() }); // Return validation errors
+            next(createHttpError(400, result.array()[0].msg as string)); // Return validation errors
             return;
         }
         const { name, address } = req.body; // Extract name and address from request body
@@ -40,7 +40,7 @@ export class TenantController {
         // Validate request body
         const result = validationResult(req);
         if (!result.isEmpty()) {
-            res.status(400).json({ errors: result.array() }); // Return validation errors
+            next(createHttpError(400, result.array()[0].msg as string)); // Return validation errors
             return;
         }
         const { name, address } = req.body; // Extract name and address from request body

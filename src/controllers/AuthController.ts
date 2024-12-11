@@ -31,7 +31,8 @@ export class AuthController {
         const result = validationResult(req);
         if (!result.isEmpty()) {
             // Return 400 Bad Request if validation fails
-            return res.status(400).json({ errors: result.array() });
+            // return res.status(400).json({ errors: result.array() });
+            return next(createHttpError(400, result.array()[0].msg as string));
         }
 
         // Destructure user details from request body
@@ -107,7 +108,7 @@ export class AuthController {
         const result = validationResult(req);
         if (!result.isEmpty()) {
             // Return 400 Bad Request if validation fails
-            res.status(400).json({ errors: result.array() });
+            next(createHttpError(400, result.array()[0].msg as string));
             return;
         }
 
