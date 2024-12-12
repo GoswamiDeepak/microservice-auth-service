@@ -136,8 +136,7 @@ export class Userservice {
             .orderBy('user.id', 'DESC')
             .getManyAndCount();
 
-        // eslint-disable-next-line no-console
-        console.log(queryBuilder.getSql()); //Check sql
+        // console.log(queryBuilder.getSql()); //Check sql
 
         return result;
     }

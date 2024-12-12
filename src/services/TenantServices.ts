@@ -1,5 +1,5 @@
 import { Repository } from 'typeorm';
-import { ITenant } from '../types';
+import { ITenant, TenantQueryParams } from '../types';
 import { Tenant } from '../entity/Tenant';
 import createHttpError from 'http-errors';
 
@@ -13,8 +13,24 @@ export class TenantService {
         return await this.tenantRespository.update(id, tenantData);
     }
 
-    async getAll() {
-        return await this.tenantRespository.find();
+    async getAll(validateedQuery: TenantQueryParams) {
+        const queryBuilder =
+            this.tenantRespository.createQueryBuilder('tenant');
+
+        if (validateedQuery.q) {
+            const searchTerm = `%${validateedQuery.q}%`;
+            queryBuilder
+                .where('tenant.name ILike :q', { q: searchTerm })
+                .orWhere('tenant.address ILike :q', { q: searchTerm });
+        }
+
+        const result = await queryBuilder
+            .skip((validateedQuery.currentPage - 1) * validateedQuery.perPage)
+            .take(validateedQuery.perPage)
+            .getManyAndCount();
+
+        return result;
+        // return await this.tenantRespository.find();
     }
 
     async getById(tenantId: number) {
