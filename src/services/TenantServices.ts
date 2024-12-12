@@ -27,6 +27,7 @@ export class TenantService {
         const result = await queryBuilder
             .skip((validateedQuery.currentPage - 1) * validateedQuery.perPage)
             .take(validateedQuery.perPage)
+            .orderBy('tenant.id', 'DESC')
             .getManyAndCount();
 
         return result;
