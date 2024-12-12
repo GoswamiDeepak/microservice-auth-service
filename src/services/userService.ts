@@ -85,7 +85,7 @@ export class Userservice {
     // Method to update user information
     async update(
         userId: number,
-        { firstname, lastname, role }: LimitedUserData,
+        { firstname, lastname, role, email, tenantId }: LimitedUserData,
     ) {
         try {
             // Update the user's firstname, lastname, and role
@@ -93,6 +93,8 @@ export class Userservice {
                 firstname,
                 lastname,
                 role,
+                email,
+                tenant: tenantId ? { id: tenantId } : null,
             });
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
@@ -128,13 +130,13 @@ export class Userservice {
         }
 
         const result = await queryBuilder
+            .leftJoinAndSelect('user.tenant', 'tenant')
             .skip((validatedQuery.currentPage - 1) * validatedQuery.perPage)
             .take(validatedQuery.perPage)
             .orderBy('user.id', 'DESC')
             .getManyAndCount();
 
-        // eslint-disable-next-line no-console
-        console.log(queryBuilder.getSql()); //Check sql
+        // console.log(queryBuilder.getSql()); //Check sql
 
         return result;
     }

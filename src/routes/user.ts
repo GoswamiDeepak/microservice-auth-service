@@ -53,6 +53,7 @@ router.get(
     (req: Request, res: Response, next: NextFunction) =>
         userController.getAll(req, res, next),
 );
+
 router.get(
     '/:id',
     authenticateMiddleware as RequestHandler,
@@ -60,6 +61,7 @@ router.get(
     (req: Request, res: Response, next: NextFunction) =>
         userController.getOne(req, res, next),
 );
+
 router.delete(
     '/:id',
     authenticateMiddleware as RequestHandler,

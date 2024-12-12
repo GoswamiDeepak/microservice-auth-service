@@ -1,5 +1,10 @@
 // Import necessary modules and types from express and other files
-import express, { NextFunction, RequestHandler, Response } from 'express';
+import express, {
+    NextFunction,
+    Request,
+    RequestHandler,
+    Response,
+} from 'express';
 import { TenantController } from '../controllers/TenantController';
 import { TenantService } from '../services/TenantServices';
 import { AppDataSource } from '../config/data-source';
@@ -10,6 +15,7 @@ import { canAccess } from '../middlewares/canAccess';
 import { Role } from '../constants';
 import tenantValidator from '../validators/tenant.validator';
 import { CreateTenantRequest } from '../types';
+import listTenantsValidator from '../validators/list-tenants-validator';
 
 // Create a new Express router instance
 const router = express.Router();
@@ -44,7 +50,14 @@ router.patch(
 );
 
 // Define the route for getting all tenants
-router.get('/', (req, res, next) => tenantController.getAll(req, res, next));
+router.get(
+    '/',
+    authenticateMiddleware as RequestHandler, // Middleware to authenticate the user
+    canAccess([Role.ADMIN]),
+    listTenantsValidator,
+    (req: Request, res: Response, next: NextFunction) =>
+        tenantController.getAll(req, res, next),
+);
 
 // Define the route for getting a single tenant by ID
 router.get(

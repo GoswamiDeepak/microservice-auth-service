@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import { TenantService } from '../services/TenantServices';
-import { CreateTenantRequest } from '../types';
+import { CreateTenantRequest, TenantQueryParams } from '../types';
 import { Logger } from 'winston';
-import { validationResult } from 'express-validator';
+import { matchedData, validationResult } from 'express-validator';
 import createHttpError from 'http-errors';
 
 // Controller class for handling tenant-related requests
@@ -17,7 +17,7 @@ export class TenantController {
         // Validate request body
         const result = validationResult(req);
         if (!result.isEmpty()) {
-            res.status(400).json({ errors: result.array() }); // Return validation errors
+            next(createHttpError(400, result.array()[0].msg as string)); // Return validation errors
             return;
         }
         const { name, address } = req.body; // Extract name and address from request body
@@ -40,7 +40,7 @@ export class TenantController {
         // Validate request body
         const result = validationResult(req);
         if (!result.isEmpty()) {
-            res.status(400).json({ errors: result.array() }); // Return validation errors
+            next(createHttpError(400, result.array()[0].msg as string)); // Return validation errors
             return;
         }
         const { name, address } = req.body; // Extract name and address from request body
@@ -70,11 +70,20 @@ export class TenantController {
 
     // Method to handle fetching all tenants
     async getAll(req: Request, res: Response, next: NextFunction) {
+        const validatedQuery = matchedData(req, { onlyValidData: true });
         try {
             // Call the service to get all tenants
-            const tenants = await this.tenantService.getAll();
+            const [tenants, count] = await this.tenantService.getAll(
+                validatedQuery as TenantQueryParams,
+            );
             this.logger.info('All tenant have been fetched!'); // Log success
-            res.json(tenants); // Return the list of tenants
+
+            res.json({
+                currentPage: validatedQuery.currentPage,
+                perPage: validatedQuery.perPage,
+                totalCount: count,
+                data: tenants,
+            }); // Return the list of tenants
         } catch (error) {
             next(error); // Pass error to the next middleware
             return;

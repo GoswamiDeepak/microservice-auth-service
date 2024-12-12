@@ -14,7 +14,7 @@ export class UserController {
     async create(req: CreateUserReqest, res: Response, next: NextFunction) {
         const result = validationResult(req);
         if (!result.isEmpty()) {
-            res.status(400).json({ errors: result.array() });
+            next(createHttpError(400, result.array()[0].msg as string));
             return;
         }
         const { firstname, lastname, email, password, role, tenantId } =
@@ -38,10 +38,10 @@ export class UserController {
     async update(req: UpdateUserReqest, res: Response, next: NextFunction) {
         const result = validationResult(req);
         if (!result.isEmpty()) {
-            res.status(400).json({ errors: result.array() });
+            next(createHttpError(400, result.array()[0].msg as string));
             return;
         }
-        const { firstname, lastname, role } = req.body;
+        const { firstname, lastname, role, email, tenantId } = req.body;
         const userId = req.params.id;
         if (isNaN(Number(userId))) {
             next(createHttpError(400, 'Invalid url param!'));
@@ -53,6 +53,8 @@ export class UserController {
                 firstname,
                 lastname,
                 role,
+                email,
+                tenantId,
             });
             this.logger.info('User has been updated', { id: userId });
             res.json({ id: Number(userId) });
