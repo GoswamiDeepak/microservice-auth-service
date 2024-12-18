@@ -64,6 +64,9 @@ export class Userservice {
                 'role',
                 'password',
             ],
+            relations: {
+                tenant: true,
+            },
         });
         return user;
     }
